@@ -79,19 +79,20 @@ public class ClientHandler implements Runnable {
 		String clientMsg;
 
 		try {
-			while(client.isConnected()) {
-				
-				// 서버 메시지 쓰기 스레드
-				new Thread(() -> {
-					try {
+			// 서버 메시지 쓰기 스레드
+			new Thread(() -> {
+				try {
+					while(client.isConnected()) {
 						String msg = inputBr.readLine();
 						sendMsgToAll("[SERVER]: " + msg, true);
-					} catch (IOException e) {
-						System.out.println("run() 표준 입력 스트림 입출력 오류: " + e.getMessage());
-						closeAll();
 					}
-				}).start();
-				
+				} catch (IOException e) {
+					System.out.println("run() 표준 입력 스트림 입출력 오류: " + e.getMessage());
+					closeAll();
+				}
+			}).start();			
+			
+			while(client.isConnected()) {
 				// 서버 메시지 읽기 스레드
 				clientMsg = serverBr.readLine();
 				sendMsgToAll(clientMsg, false);

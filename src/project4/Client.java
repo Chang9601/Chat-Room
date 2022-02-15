@@ -102,6 +102,7 @@ public class Client {
 		Client client = new Client(socket, username);
 		client.readMsg();
 		client.writeMsg();
+
 		
 		client.closeAll();
 		scanner.close();
